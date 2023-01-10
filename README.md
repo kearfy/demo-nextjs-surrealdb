@@ -12,5 +12,6 @@ It's inspired by two other projects that I'm working on:
 - Run a local database and run all table definitions in there that are included in the tables folder.
     - I personally suggest to use Surrealist: https://github.com/StarlaneStudios/Surrealist
 - Adjust the connection settings in the hooks/Surreal.tsx file
-- Run `pnpm dev` in the root of the project to start the NextJS development server.
+- Run `pnpm i` in the root of the project to install dependencies.
+- Run `pnpm dev`  to start the NextJS development server.
 - Access the app at: http://localhost:8000
