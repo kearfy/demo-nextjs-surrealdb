@@ -1,6 +1,7 @@
 import React from "react";
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { SurrealQuery } from "../hooks/Surreal";
+import Link from "next/link";
 
 export type PostID = `post:${string}`;
 export type Post = {
@@ -78,9 +79,14 @@ export function RenderPost({
                 {isRemovingPost ? "Removing post" : post.body}
             </p>
 
-            <button onClick={() => removePost()} className="mt-8 bg-red-600 text-white px-4 py-2 rounded-md">
-                {isRemovingPost ? "Working" : "delete"}
-            </button>
+            <div className="flex gap-4">
+                <div className="mt-8 bg-blue-600 text-white px-4 py-2 rounded-md">
+                    <Link href={`/edit/${post.id}`}>edit</Link>
+                </div>
+                <button onClick={() => removePost()} className="mt-8 bg-red-600 text-white px-4 py-2 rounded-md">
+                    {isRemovingPost ? "Working" : "delete"}
+                </button>
+            </div>
         </div>
     )
 }
