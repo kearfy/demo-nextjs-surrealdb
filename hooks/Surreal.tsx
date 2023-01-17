@@ -2,8 +2,8 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import Surreal, { Result } from 'surrealdb.js';
 
 export const SurrealEndpoint = `http://localhost:8000/rpc`;
-export const SurrealNamespace = 'demo'
-export const SurrealDatabase = 'demo'
+export const SurrealNamespace = 'test'
+export const SurrealDatabase = 'test'
 export const SurrealInstance = new Surreal(SurrealEndpoint);
 
 export function SurrealProvider({ children }: { children: ReactNode }) {
