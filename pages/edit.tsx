@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import PostEditor from '../components/PostEditor';
-import { useAuthenticatedUser, usePost, useUpdatePost } from '../constants/Queries';
+import {
+    useAuthenticatedUser,
+    usePost,
+    useUpdatePost,
+} from '../constants/Queries';
 import { PostID, User } from '../constants/Types';
-import FormPage from '../components/layout/FormPage';
 
 export default function Edit() {
     const router = useRouter();
@@ -13,12 +16,12 @@ export default function Edit() {
 
     const { isLoading: isSearching, data: post } = usePost<User>({
         id,
-        fetchAuthor: true
-    })
+        fetchAuthor: true,
+    });
 
     const { isLoading: isUpdatingPost, mutate: updatePost } = useUpdatePost({
         id,
-        onUpdated: () => router.push('/')
+        onUpdated: () => router.push('/'),
     });
 
     useEffect(() => {
@@ -31,20 +34,22 @@ export default function Edit() {
 
     const userIsAuthor = post?.author.id == user?.id;
     const errorMessage = isSearching
-        ? "Searching the post"
+        ? 'Searching the post'
         : !userIsAuthor
-            ? "You are not the author of this post"
-            : !post
-                ? "Post not found"
-                : undefined;
+        ? 'You are not the author of this post'
+        : !post
+        ? 'Post not found'
+        : undefined;
 
     return (
-        <PostEditor {...{
-            title: "Edit post",
-            onSave: updatePost,
-            isLoading: isUpdatingPost,
-            post,
-            errorMessage
-        }} />
+        <PostEditor
+            {...{
+                title: 'Edit post',
+                onSave: updatePost,
+                isLoading: isUpdatingPost,
+                post,
+                errorMessage,
+            }}
+        />
     );
 }

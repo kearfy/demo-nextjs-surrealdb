@@ -7,7 +7,7 @@ export default function Create() {
     const router = useRouter();
     const { data: user } = useAuthenticatedUser();
     const { isLoading, mutate } = useCreatePost({
-        onCreated: () => router.push('/')
+        onCreated: () => router.push('/'),
     });
 
     useEffect(() => {
@@ -15,10 +15,12 @@ export default function Create() {
     }, [user, router]);
 
     return (
-        <PostEditor {...{
-            title: "Create post",
-            isLoading,
-            onSave: mutate
-        }} />
-    )
+        <PostEditor
+            {...{
+                title: 'Create post',
+                isLoading,
+                onSave: mutate,
+            }}
+        />
+    );
 }

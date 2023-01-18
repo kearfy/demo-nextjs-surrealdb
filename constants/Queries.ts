@@ -1,29 +1,44 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { SurrealQuery, SurrealSignin, SurrealSignout, SurrealSignup } from "../lib/Surreal";
-import { Post, PostID, PostInput, SigninDetails, SignupDetails, User, UserID } from "./Types";
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+    SurrealQuery,
+    SurrealSignin,
+    SurrealSignout,
+    SurrealSignup,
+} from '../lib/Surreal';
+import {
+    Post,
+    PostID,
+    PostInput,
+    SigninDetails,
+    SignupDetails,
+    User,
+    UserID,
+} from './Types';
 
 export function processUserRecord(user: User) {
     return {
         ...user,
         created: new Date(user.created),
-        updated: new Date(user.updated)
-    }
+        updated: new Date(user.updated),
+    };
 }
 
 export function useAuthenticatedUser() {
     return useQuery({
         queryKey: ['authenticated-user'],
         queryFn: async (): Promise<User | null> => {
-            const result = await SurrealQuery<User>(`SELECT * FROM user WHERE id = $auth.id`);
+            const result = await SurrealQuery<User>(
+                `SELECT * FROM user WHERE id = $auth.id`
+            );
             const data = (result[0] && result[0]?.result) ?? [];
-            return data.map(processUserRecord).find(a => !!a) ?? null;
+            return data.map(processUserRecord).find((a) => !!a) ?? null;
         },
     });
 }
 
 export function useSurrealSignin({
     onSuccess,
-    onFailure
+    onFailure,
 }: {
     onSuccess?: () => unknown;
     onFailure?: () => unknown;
@@ -43,7 +58,7 @@ export function useSurrealSignin({
 
 export function useSurrealSignup({
     onSuccess,
-    onFailure
+    onFailure,
 }: {
     onSuccess?: () => unknown;
     onFailure?: () => unknown;
@@ -62,7 +77,7 @@ export function useSurrealSignup({
 }
 
 export function useSurrealSignout({
-    onSuccess
+    onSuccess,
 }: {
     onSuccess?: () => unknown;
 }) {
@@ -80,37 +95,46 @@ export function useSurrealSignout({
 //////// POSTS /////////
 ////////////////////////
 
-export function processPostRecord<TAuthorType extends UserID | User = UserID>(post: Post<TAuthorType>): Post<TAuthorType> {
+export function processPostRecord<TAuthorType extends UserID | User = UserID>(
+    post: Post<TAuthorType>
+): Post<TAuthorType> {
     return {
         ...post,
         created: new Date(post.created),
         updated: new Date(post.updated),
-        author: (typeof post.author == 'object' ? {
-            ...post.author,
-            created: new Date(post.author.created),
-            updated: new Date(post.author.updated),
-        } : post.author)
-    }
+        author:
+            typeof post.author == 'object'
+                ? {
+                      ...post.author,
+                      created: new Date(post.author.created),
+                      updated: new Date(post.author.updated),
+                  }
+                : post.author,
+    };
 }
 
 export function usePosts<TAuthorType extends UserID | User>({
-    fetchAuthor
+    fetchAuthor,
 }: {
     fetchAuthor: TAuthorType extends User ? true : false;
 }) {
     return useQuery({
         queryKey: ['posts'],
         queryFn: async (): Promise<Post<TAuthorType>[]> => {
-            const result = await SurrealQuery<Post<TAuthorType>>(`SELECT * FROM post ORDER BY created DESC ${fetchAuthor ? "FETCH author" : ""}`);
+            const result = await SurrealQuery<Post<TAuthorType>>(
+                `SELECT * FROM post ORDER BY created DESC ${
+                    fetchAuthor ? 'FETCH author' : ''
+                }`
+            );
             const data = (result[0] && result[0]?.result) ?? [];
-            return data.map(post => processPostRecord<TAuthorType>(post));
+            return data.map((post) => processPostRecord<TAuthorType>(post));
         },
     });
 }
 
 export function usePost<TAuthorType extends UserID | User>({
     id,
-    fetchAuthor
+    fetchAuthor,
 }: {
     id: PostID;
     fetchAuthor: TAuthorType extends User ? true : false;
@@ -118,30 +142,38 @@ export function usePost<TAuthorType extends UserID | User>({
     return useQuery({
         queryKey: ['post', id],
         queryFn: async (): Promise<Post<TAuthorType> | null> => {
-            const result = await SurrealQuery<Post<TAuthorType>>(`SELECT * FROM post WHERE id = $id ${fetchAuthor ? "FETCH author" : ""}`, { id });
+            const result = await SurrealQuery<Post<TAuthorType>>(
+                `SELECT * FROM post WHERE id = $id ${
+                    fetchAuthor ? 'FETCH author' : ''
+                }`,
+                { id }
+            );
             const data = (result[0] && result[0]?.result) ?? [];
             if (!data[0]) return null;
-            return processPostRecord<TAuthorType>(data[0])
+            return processPostRecord<TAuthorType>(data[0]);
         },
     });
 }
 
 export function useCreatePost({
-    onCreated
+    onCreated,
 }: {
     onCreated: (post: Post<UserID>) => unknown;
 }) {
     return useMutation({
         mutationFn: async (post: PostInput) => {
-            const result = await SurrealQuery<Post<UserID>>(`CREATE post CONTENT {
+            const result = await SurrealQuery<Post<UserID>>(
+                `CREATE post CONTENT {
                 title: $title,
                 body: $body
-            }`, post);
+            }`,
+                post
+            );
 
             if (result[0] && result[0]?.result?.[0]) {
                 onCreated(result[0] && result[0]?.result[0]);
             } else {
-                throw new Error("Failed to create post");
+                throw new Error('Failed to create post');
             }
         },
     });
@@ -156,18 +188,21 @@ export function useUpdatePost({
 }) {
     return useMutation({
         mutationFn: async (post: PostInput) => {
-            const result = await SurrealQuery<Post>(`UPDATE post CONTENT {
+            const result = await SurrealQuery<Post>(
+                `UPDATE post CONTENT {
                 title: $title,
                 body: $body
-            } WHERE id = $id`, {
-                id,
-                ...post
-            });
-    
+            } WHERE id = $id`,
+                {
+                    id,
+                    ...post,
+                }
+            );
+
             if (result[0] && result[0]?.result?.[0]) {
                 onUpdated?.(result[0] && result[0]?.result?.[0]);
             } else {
-                throw new Error("Failed to create post");
+                throw new Error('Failed to create post');
             }
         },
     });
@@ -175,19 +210,24 @@ export function useUpdatePost({
 
 export function useRemovePost({
     id,
-    onRemoved
+    onRemoved,
 }: {
     id: PostID;
     onRemoved?: (id: PostID) => unknown;
 }) {
     return useMutation({
         mutationFn: async () => {
-            const result = await SurrealQuery<Post>(`DELETE post WHERE id = $id`, { id });
+            const result = await SurrealQuery<Post>(
+                `DELETE post WHERE id = $id`,
+                {
+                    id,
+                }
+            );
 
             if (result[0] && result[0]?.result) {
                 onRemoved?.(id);
             } else {
-                throw new Error("Failed to remove post");
+                throw new Error('Failed to remove post');
             }
         },
     });

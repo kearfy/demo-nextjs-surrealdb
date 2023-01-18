@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
-import Button from "../components/form/Button";
-import { SignupDetails } from "../constants/Types";
-import { useForm } from "react-hook-form";
-import { useAuthenticatedUser, useSurrealSignin, useSurrealSignup } from "../constants/Queries";
-import { useRouter } from "next/router";
-import FormPage from "../components/layout/FormPage";
-import Input from "../components/form/Input";
+import React, { useEffect } from 'react';
+import { SignupDetails } from '../constants/Types';
+import { useForm } from 'react-hook-form';
+import { useAuthenticatedUser, useSurrealSignup } from '../constants/Queries';
+import { useRouter } from 'next/router';
+import FormPage from '../components/layout/FormPage';
+import Input from '../components/form/Input';
 
 export default function Signup() {
     const router = useRouter();
@@ -13,7 +12,7 @@ export default function Signup() {
     const { register, handleSubmit } = useForm<SignupDetails>();
     const { isLoading, mutate } = useSurrealSignup({
         onSuccess: () => router.push('/'),
-        onFailure: () => alert("User already exists!"),
+        onFailure: () => alert('User already exists!'),
     });
 
     useEffect(() => {
@@ -21,14 +20,24 @@ export default function Signup() {
     }, [user, router]);
 
     return (
-        <FormPage {...{
-            title: "Signup",
-            onSubmit: handleSubmit((auth) => mutate(auth)),
-            isLoading,
-        }}>
-            <Input {...register('name')}     type="text"     placeholder="Your name" />
-            <Input {...register('username')} type="text"     placeholder="Username"  />
-            <Input {...register('password')} type="password" placeholder="Password"  />
+        <FormPage
+            {...{
+                title: 'Signup',
+                onSubmit: handleSubmit((auth) => mutate(auth)),
+                isLoading,
+            }}
+        >
+            <Input {...register('name')} type="text" placeholder="Your name" />
+            <Input
+                {...register('username')}
+                type="text"
+                placeholder="Username"
+            />
+            <Input
+                {...register('password')}
+                type="password"
+                placeholder="Password"
+            />
         </FormPage>
     );
 }
