@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
-import Button from "../components/Button";
+import Button from "../components/form/Button";
 import { SignupDetails } from "../constants/Types";
 import { useForm } from "react-hook-form";
 import { useAuthenticatedUser, useSurrealSignin, useSurrealSignup } from "../constants/Queries";
 import { useRouter } from "next/router";
+import FormPage from "../components/layout/FormPage";
+import Input from "../components/form/Input";
 
 export default function Signup() {
     const router = useRouter();
@@ -19,20 +21,14 @@ export default function Signup() {
     }, [user, router]);
 
     return (
-        <div className="flex justify-center items-center w-screen h-screen">
-            <form onSubmit={handleSubmit((auth) => mutate(auth))} className="py-16 px-20 bg-slate-200 rounded-xl flex flex-col gap-6">
-                <h1 className="text-center text-4xl pb-16 pt-8">
-                    Signup
-                </h1>
-                <input {...register('name')}     type="text"     placeholder="Your name" className="w-96 bg-slate-300 px-8 py-4 rounded" />
-                <input {...register('username')} type="text"     placeholder="Username"  className="w-96 bg-slate-300 px-8 py-4 rounded" />
-                <input {...register('password')} type="password" placeholder="Password"  className="w-96 bg-slate-300 px-8 py-4 rounded" />
-                <div className="flex justify-center pt-10">
-                    <Button disabled={isLoading}>
-                        {isLoading ? "Loading" : "continue"}
-                    </Button>
-                </div>
-            </form>
-        </div>
-    )
+        <FormPage {...{
+            title: "Signup",
+            onSubmit: handleSubmit((auth) => mutate(auth)),
+            isLoading,
+        }}>
+            <Input {...register('name')}     type="text"     placeholder="Your name" />
+            <Input {...register('username')} type="text"     placeholder="Username"  />
+            <Input {...register('password')} type="password" placeholder="Password"  />
+        </FormPage>
+    );
 }

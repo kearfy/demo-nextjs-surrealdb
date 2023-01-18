@@ -1,9 +1,9 @@
 import Image from "next/image";
 import React from "react";
-import { useAuthenticatedUser, useSurrealSignout } from "../constants/Queries";
-import LinkButton from "./LinkButton";
+import { useAuthenticatedUser, useSurrealSignout } from "../../constants/Queries";
+import LinkButton from "../form/LinkButton";
 import Link from "next/link";
-import Button from "./Button";
+import Button from "../form/Button";
 import { PlusCircle } from 'react-feather';
 
 export default function Navbar() {

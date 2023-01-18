@@ -1,32 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import { useAuthenticatedUser, usePosts, useRemovePost } from "../constants/Queries";
+import { useRemovePost } from "../constants/Queries";
 import { Post, PostID, User } from "../constants/Types";
 
-export default function Posts() {
-    const { isLoading, error, data, refetch } = usePosts<User>({
-        fetchAuthor: true
-    });
-
-    const { data: user } = useAuthenticatedUser();
-
-    if (isLoading) return <h2 className="text-bold mx-8 mt-4 mb-8 text-5xl">Loading posts...</h2>;
-    if (error) return <h2 className="text-bold mx-8 mt-4 mb-8 text-5xl">Failed to load posts</h2>;
-
-    return (
-        <>
-            <h2 className="font-bold mx-8 mt-4 mb-12 text-5xl">Posts</h2>
-            {
-                data?.map(post => (
-                    <RenderPost post={post} key={post.id} onRemoved={() => refetch()} showAuthorTools={post.author.id === user?.id} />
-                ))
-            }
-            {data?.length == 0 && <p className="mx-8">No posts available, create one!</p>}
-        </>
-    )
-}
-
-export function RenderPost({
+export default function RenderPost({
     post,
     onRemoved,
     showAuthorTools
@@ -41,7 +18,7 @@ export function RenderPost({
     });
 
     return (
-        <div className="p-8 mx-8 mb-16 bg-slate-200 rounded-lg">
+        <div className="p-8 bg-slate-200 rounded-lg">
             <h3 className="font-semibold text-3xl mt-1 mb-3">{post.title}</h3>
             <div className="flex gap-2.5 items-center mb-4">
                 <div className="rounded-full bg-slate-300 w-7 h-7 text-sm flex justify-center items-center">
