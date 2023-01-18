@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import PostEditor from '../components/PostEditor';
 import { useAuthenticatedUser, useCreatePost } from '../constants/Queries';
+import Head from '../components/Head';
 
 export default function Create() {
     const router = useRouter();
@@ -15,12 +16,15 @@ export default function Create() {
     }, [user, router]);
 
     return (
-        <PostEditor
-            {...{
-                title: 'Create post',
-                isLoading,
-                onSave: mutate,
-            }}
-        />
+        <>
+            <Head title="Create post" robots="noindex, follow" />
+            <PostEditor
+                {...{
+                    title: 'Create post',
+                    isLoading,
+                    onSave: mutate,
+                }}
+            />
+        </>
     );
 }

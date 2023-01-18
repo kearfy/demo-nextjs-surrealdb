@@ -12,13 +12,15 @@ export const SurrealInstance = new Surreal(SurrealEndpoint);
 // Even after JS promises have been fulfilled, we can still await them.
 // This way the content can load as usual, whilst surrealdb can initialize at it's own pase.
 export const SurrealInit = (async () => {
-    // Connect to proper NS/DB and attempt to authenticate user on page load.
-    const token = localStorage.getItem('usersession');
-    await SurrealInstance.use(SurrealNamespace, SurrealDatabase);
-    if (token)
-        await SurrealInstance.authenticate(token).catch(
-            (_e) => 'Failed to authenticate'
-        );
+    if (typeof window !== 'undefined') {
+        // Connect to proper NS/DB and attempt to authenticate user on page load.
+        const token = localStorage.getItem('usersession');
+        await SurrealInstance.use(SurrealNamespace, SurrealDatabase);
+        if (token)
+            await SurrealInstance.authenticate(token).catch(
+                (_e) => 'Failed to authenticate'
+            );
+    }
 })();
 
 // Just a wrapper function for the query function of surrealdb.js.

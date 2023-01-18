@@ -5,6 +5,7 @@ import { useAuthenticatedUser, useSurrealSignup } from '../constants/Queries';
 import { useRouter } from 'next/router';
 import FormPage from '../components/layout/FormPage';
 import Input from '../components/form/Input';
+import Head from '../components/Head';
 
 export default function Signup() {
     const router = useRouter();
@@ -20,24 +21,34 @@ export default function Signup() {
     }, [user, router]);
 
     return (
-        <FormPage
-            {...{
-                title: 'Signup',
-                onSubmit: handleSubmit((auth) => mutate(auth)),
-                isLoading,
-            }}
-        >
-            <Input {...register('name')} type="text" placeholder="Your name" />
-            <Input
-                {...register('username')}
-                type="text"
-                placeholder="Username"
+        <>
+            <Head
+                title="Signin"
+                description="Sign in to your account on this awesome blog to create new posts and manage existing ones!"
             />
-            <Input
-                {...register('password')}
-                type="password"
-                placeholder="Password"
-            />
-        </FormPage>
+            <FormPage
+                {...{
+                    title: 'Signup',
+                    onSubmit: handleSubmit((auth) => mutate(auth)),
+                    isLoading,
+                }}
+            >
+                <Input
+                    {...register('name')}
+                    type="text"
+                    placeholder="Your name"
+                />
+                <Input
+                    {...register('username')}
+                    type="text"
+                    placeholder="Username"
+                />
+                <Input
+                    {...register('password')}
+                    type="password"
+                    placeholder="Password"
+                />
+            </FormPage>
+        </>
     );
 }

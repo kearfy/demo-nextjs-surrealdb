@@ -7,6 +7,7 @@ import {
     useUpdatePost,
 } from '../constants/Queries';
 import { PostID, User } from '../constants/Types';
+import Head from '../components/Head';
 
 export default function Edit() {
     const router = useRouter();
@@ -38,14 +39,17 @@ export default function Edit() {
         : undefined;
 
     return (
-        <PostEditor
-            {...{
-                title: 'Edit post',
-                onSave: updatePost,
-                isLoading: isUpdatingPost,
-                post,
-                errorMessage,
-            }}
-        />
+        <>
+            <Head title="Create post" robots="noindex, follow" />
+            <PostEditor
+                {...{
+                    title: 'Edit post',
+                    onSave: updatePost,
+                    isLoading: isUpdatingPost,
+                    post,
+                    errorMessage,
+                }}
+            />
+        </>
     );
 }
