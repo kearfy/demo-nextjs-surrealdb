@@ -14,14 +14,10 @@ import {
     User,
     UserID,
 } from './Types';
-
-export function processUserRecord(user: User) {
-    return {
-        ...user,
-        created: new Date(user.created),
-        updated: new Date(user.updated),
-    };
-}
+import {
+    processPostRecord,
+    processUserRecord,
+} from '../lib/ProcessDatabaseRecord';
 
 export function useAuthenticatedUser() {
     return useQuery({
@@ -94,24 +90,6 @@ export function useSurrealSignout({
 ////////////////////////
 //////// POSTS /////////
 ////////////////////////
-
-export function processPostRecord<TAuthorType extends UserID | User = UserID>(
-    post: Post<TAuthorType>
-): Post<TAuthorType> {
-    return {
-        ...post,
-        created: new Date(post.created),
-        updated: new Date(post.updated),
-        author:
-            typeof post.author == 'object'
-                ? {
-                      ...post.author,
-                      created: new Date(post.author.created),
-                      updated: new Date(post.author.updated),
-                  }
-                : post.author,
-    };
-}
 
 export function usePosts<TAuthorType extends UserID | User>({
     fetchAuthor,
