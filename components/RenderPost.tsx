@@ -1,7 +1,8 @@
 import React from 'react';
-import Link from 'next/link';
 import { useRemovePost } from '../constants/Queries';
 import { Post, PostID, User } from '../constants/Types';
+import LinkButton from './form/LinkButton';
+import Button from './form/Button';
 
 export default function RenderPost({
     post,
@@ -22,10 +23,13 @@ export default function RenderPost({
             <h3 className="font-semibold text-3xl mt-1 mb-3">{post.title}</h3>
             <div className="flex gap-2.5 items-center mb-4">
                 <div className="rounded-full bg-slate-300 w-7 h-7 text-sm flex justify-center items-center">
+                    {/* If author name contains of multiple segments */}
                     {post.author.name.split(' ').length > 1
-                        ? post.author.name.split(' ')[0][0].toUpperCase() +
+                        ? // Grab the first letter from first and last segment.
+                          post.author.name.split(' ')[0][0].toUpperCase() +
                           post.author.name.split(' ').pop()?.[0].toUpperCase()
-                        : post.author.name.slice(0, 2).toUpperCase()}
+                        : // Otherwise grab first two letters
+                          post.author.name.slice(0, 2).toUpperCase()}
                 </div>
                 <p className="font-light">{post.author.name}</p>
             </div>
@@ -33,17 +37,19 @@ export default function RenderPost({
                 {isRemovingPost ? 'Removing post' : post.body}
             </p>
 
+            {/* Show edit & delete button posts authored by signed in user */}
             {showAuthorTools && (
                 <div className="flex gap-4">
-                    <div className="mt-8 bg-blue-600 text-white px-4 py-2 rounded-md">
-                        <Link href={`/edit#${post.id}`}>edit</Link>
-                    </div>
-                    <button
+                    <LinkButton href={`/edit#${post.id}`} size="small">
+                        edit
+                    </LinkButton>
+                    <Button
                         onClick={() => removePost()}
-                        className="mt-8 bg-red-600 text-white px-4 py-2 rounded-md"
+                        size="small"
+                        color="red"
                     >
                         {isRemovingPost ? 'Working' : 'delete'}
-                    </button>
+                    </Button>
                 </div>
             )}
         </div>

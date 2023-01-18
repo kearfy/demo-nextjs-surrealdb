@@ -19,6 +19,8 @@ import {
     processUserRecord,
 } from '../lib/ProcessDatabaseRecord';
 
+// Contains wrapper react-query functions to make them easily reusable.
+
 export function useAuthenticatedUser() {
     return useQuery({
         queryKey: ['authenticated-user'],

@@ -1,5 +1,7 @@
 import { Post, User, UserID } from '../constants/Types';
 
+// Process stuff like dates from the database to JS date objects, properly format data.
+
 export function processUserRecord(user: User) {
     return {
         ...user,

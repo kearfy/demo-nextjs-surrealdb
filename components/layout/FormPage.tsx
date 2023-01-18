@@ -18,6 +18,7 @@ export default function FormPage({
         <div className="flex justify-center items-center w-screen h-screen">
             <form
                 onSubmit={onSubmit}
+                // FIXME: Must be a better way to handle the width of this form.
                 className="w-[700px] max-w-full py-16 px-20 bg-slate-200 rounded-xl"
             >
                 <div className="w-full flex flex-col gap-6">

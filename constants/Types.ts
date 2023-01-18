@@ -1,3 +1,7 @@
+////////////////////////
+//////// USERS /////////
+////////////////////////
+
 export type UserID = `user:${string}`;
 export type User = {
     id: UserID;
