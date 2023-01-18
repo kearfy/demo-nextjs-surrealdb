@@ -1,48 +1,25 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import { SurrealQuery } from '../hooks/Surreal';
-import { Post } from '../components/Posts';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Button from '../components/Button';
-import LinkButton from '../components/LinkButton';
-
-type PostInput = Pick<Post, 'title' | 'author' | 'body'>;
+import PostEditor from '../components/Editor';
+import { useAuthenticatedUser, useCreatePost } from '../constants/Queries';
 
 export default function Create() {
     const router = useRouter();
-    const { register, handleSubmit } = useForm<PostInput>();
+    const { data: user } = useAuthenticatedUser();
 
-    const { isLoading, mutate } = useMutation({
-        mutationFn: async (post: PostInput) => {
-            const result = await SurrealQuery<Post>(`CREATE post CONTENT {
-                title: $title,
-                author: $author,
-                body: $body
-            }`, post);
+    useEffect(() => {
+        if (!user) router.push('/signin');
+    }, [user, router]);
 
-            if (result[0] && result[0]?.result) {
-                router.push('/');
-            } else {
-                throw new Error("Failed to create post");
-            }
-        },
-    });
+    const { isLoading, mutate } = useCreatePost({
+        onCreated: () => router.push('/')
+    })
 
     return !isLoading ? (
-        <>
-            <div className='p-8 flex'>
-                <LinkButton href="/">Back to overview</LinkButton>
-            </div>
-            <form onSubmit={handleSubmit((post) => mutate(post))}>
-                <input {...register('title')} placeholder="title" required className="bg-gray-200 block px-6 py-4 rounded-md text-lg my-4 mx-8 w-96 max-w-full" />
-                <input {...register('author')} placeholder="author" required className="bg-gray-200 block px-6 py-4 rounded-md text-lg my-4 mx-8 w-96 max-w-full" />
-                <textarea {...register('body')} placeholder="body" required className="bg-gray-200 block px-6 py-4 rounded-md text-lg my-4 mx-8 w-96 max-w-full" rows={10} />
-                <Button className="mx-8 mt-4">
-                    submit
-                </Button>
-            </form>
-        </>
+        <div className='pt-40 mx-8 absolute w-screen min-h-screen'>
+            <h2 className="font-bold mt-4 mb-12 text-5xl">Create</h2>
+            <PostEditor onSave={mutate} />
+        </div>
     ) : (
         <h2>Submitting post....</h2>
     )

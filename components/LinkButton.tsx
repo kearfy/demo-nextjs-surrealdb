@@ -7,7 +7,7 @@ export default function LinkButton({
     children?: ReactNode;
 }) {
     return (
-        <div className="px-6 py-4 bg-blue-600 text-white rounded-md text-lg">
+        <div className="px-6 py-2.5 bg-blue-600 text-white rounded-md text-lg">
             <Link {...props} />
         </div>
     )
