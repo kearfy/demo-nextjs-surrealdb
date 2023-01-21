@@ -26,11 +26,15 @@ DEFINE INDEX username ON TABLE user COLUMNS username UNIQUE;
 CREATE user:cld0r5z5q000008mg803v0dhe CONTENT {
     name: "Micha de Vries",
     username: "michadevries",
-    password: crypto::argon2::generate("Password1!")
+    password: crypto::argon2::generate("Password1!"),
+    created: time::now(),
+    updated: time::now()
 };
 
 CREATE user:cld0r7j69000108mg39w4fs4d CONTENT {
     name: "John Doe",
     username: "johndoe",
-    password: crypto::argon2::generate("Password1!")
+    password: crypto::argon2::generate("Password1!"),
+    created: time::now(),
+    updated: time::now()
 };

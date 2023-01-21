@@ -9,7 +9,9 @@ CREATE post CONTENT {
     author: user:cld0r7j69000108mg39w4fs4d,
     body: "Are you getting tired of serverless? Well, the next big thing is around the corner. Get buckled up!
 
-SurrealDB allows to you write backendless applications, as I like to call it."
+SurrealDB allows to you write backendless applications, as I like to call it.",
+    created: time::now(),
+    updated: time::now()
 };
 
 CREATE post CONTENT {
@@ -21,7 +23,9 @@ I ran a SurrealDB instance locally, migrate the database with the table & field 
 
 Now, I was able to spend the rest of my 88 minutes on writing the frontend. In this time I learned how to use tailwind and how to use react query too!
 
-This is absolutely a bless"
+This is absolutely a bless",
+    created: time::now(),
+    updated: time::now()
 };
 
 CREATE post CONTENT {
@@ -29,7 +33,9 @@ CREATE post CONTENT {
     author: user:cld0r7j69000108mg39w4fs4d,
     body: "You can now create an account and signin to create & manage posts!
     
-We use some cool js & react-query magic here to make it work flawlessly. Check it out!"
+We use some cool js & react-query magic here to make it work flawlessly. Check it out!",
+    created: time::now(),
+    updated: time::now()
 };
 
 -----------------------------
