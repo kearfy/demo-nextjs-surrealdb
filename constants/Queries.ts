@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
-    SurrealQuery,
+    SurrealInstance,
     SurrealSignin,
     SurrealSignout,
     SurrealSignup,
@@ -25,7 +25,7 @@ export function useAuthenticatedUser() {
     return useQuery({
         queryKey: ['authenticated-user'],
         queryFn: async (): Promise<User | null> => {
-            const result = await SurrealQuery<User>(
+            const result = await SurrealInstance.opiniatedQuery<User>(
                 `SELECT * FROM user WHERE id = $auth.id`
             );
             const data = (result[0] && result[0]?.result) ?? [];
@@ -101,7 +101,9 @@ export function usePosts<TAuthorType extends UserID | User>({
     return useQuery({
         queryKey: ['posts'],
         queryFn: async (): Promise<Post<TAuthorType>[]> => {
-            const result = await SurrealQuery<Post<TAuthorType>>(
+            const result = await SurrealInstance.opiniatedQuery<
+                Post<TAuthorType>
+            >(
                 `SELECT * FROM post ORDER BY created DESC ${
                     fetchAuthor ? 'FETCH author' : ''
                 }`
@@ -122,7 +124,9 @@ export function usePost<TAuthorType extends UserID | User>({
     return useQuery({
         queryKey: ['post', id],
         queryFn: async (): Promise<Post<TAuthorType> | null> => {
-            const result = await SurrealQuery<Post<TAuthorType>>(
+            const result = await SurrealInstance.opiniatedQuery<
+                Post<TAuthorType>
+            >(
                 `SELECT * FROM post WHERE id = $id ${
                     fetchAuthor ? 'FETCH author' : ''
                 }`,
@@ -142,7 +146,7 @@ export function useCreatePost({
 }) {
     return useMutation({
         mutationFn: async (post: PostInput) => {
-            const result = await SurrealQuery<Post<UserID>>(
+            const result = await SurrealInstance.opiniatedQuery<Post<UserID>>(
                 `CREATE post CONTENT {
                 title: $title,
                 body: $body
@@ -168,7 +172,7 @@ export function useUpdatePost({
 }) {
     return useMutation({
         mutationFn: async (post: PostInput) => {
-            const result = await SurrealQuery<Post>(
+            const result = await SurrealInstance.opiniatedQuery<Post>(
                 `UPDATE post CONTENT {
                 title: $title,
                 body: $body
@@ -197,7 +201,7 @@ export function useRemovePost({
 }) {
     return useMutation({
         mutationFn: async () => {
-            const result = await SurrealQuery<Post>(
+            const result = await SurrealInstance.opiniatedQuery<Post>(
                 `DELETE post WHERE id = $id`,
                 {
                     id,
