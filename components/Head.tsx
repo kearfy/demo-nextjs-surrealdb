@@ -1,5 +1,6 @@
 import NextHead from 'next/head';
 import React from 'react';
+import { HeadDefaults } from '../constants/HeadDefaults';
 
 export default function Head({
     title,
