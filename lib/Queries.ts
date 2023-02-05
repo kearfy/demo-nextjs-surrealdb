@@ -3,9 +3,10 @@ import AwaitedSurreal from '@theopensource-company/awaited-surrealdb';
 import { Post } from '../constants/Types';
 
 export const SurrealInstance = new AwaitedSurreal({
-    endpoint: 'http://localhost:8000',
-    namespace: 'test',
-    database: 'test',
+    endpoint:
+        process.env.NEXT_PUBLIC_SURREAL_ENDPOINT ?? 'http://localhost:8000',
+    namespace: process.env.NEXT_PUBLIC_SURREAL_NAMESPACE ?? 'test',
+    database: process.env.NEXT_PUBLIC_SURREAL_DATABASE ?? 'test',
 });
 
 export function processPostRecord(post: Post) {
