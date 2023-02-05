@@ -1,6 +1,7 @@
 DEFINE TABLE user SCHEMAFULL
     PERMISSIONS 
         FOR select FULL
+        FOR create NONE
         FOR update, delete WHERE $scope = 'user' && id = $auth.id;
 
 DEFINE SCOPE user 
