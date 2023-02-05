@@ -1,7 +1,7 @@
 import React from 'react';
 import { Post } from '../constants/Types';
 
-export default function RenderPost(post: Post) {
+export default function RenderPost({ post }: { post: Post }) {
     return (
         <div className="flex flex-col gap-2 bg-zinc-200 rounded-3xl py-10 px-12">
             <h2 className="text-4xl">{post.title}</h2>
