@@ -40,7 +40,7 @@ export default function Edit() {
 
     return (
         <>
-            <Head title="Create post" robots="noindex, follow" />
+            <Head title="Edit post" robots="noindex, follow" />
             <PostEditor
                 {...{
                     title: 'Edit post',
