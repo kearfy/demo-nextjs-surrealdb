@@ -30,7 +30,9 @@ export default function PostEditor({
             }}
         >
             {errorMessage ? (
-                <p>{errorMessage}</p>
+                <p className="text-red-600 text-xl">
+                    <b>An error occured</b>: <i>{errorMessage}</i>
+                </p>
             ) : (
                 <>
                     <Input

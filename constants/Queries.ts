@@ -94,17 +94,20 @@ export function useSurrealSignout({
 ////////////////////////
 
 export function usePosts<TAuthorType extends UserID | User>({
+    author,
     fetchAuthor,
 }: {
+    author?: UserID;
     fetchAuthor: TAuthorType extends User ? true : false;
 }) {
     return useQuery({
         queryKey: ['posts'],
         queryFn: async (): Promise<Post<TAuthorType>[]> => {
             const result = await surreal.query<[Post<TAuthorType>[]]>(
-                `SELECT * FROM post ORDER BY created DESC ${
-                    fetchAuthor ? 'FETCH author' : ''
-                }`
+                `SELECT * FROM post ${
+                    author ? 'WHERE author = $author' : ''
+                } ORDER BY created DESC ${fetchAuthor ? 'FETCH author' : ''}`,
+                { author }
             );
             const data = (result[0] && result[0]?.result) ?? [];
             return data.map((post) => processPostRecord<TAuthorType>(post));
@@ -116,12 +119,13 @@ export function usePost<TAuthorType extends UserID | User>({
     id,
     fetchAuthor,
 }: {
-    id: PostID;
+    id?: PostID;
     fetchAuthor: TAuthorType extends User ? true : false;
 }) {
     return useQuery({
         queryKey: ['post', id],
         queryFn: async (): Promise<Post<TAuthorType> | null> => {
+            if (!id) return null;
             const result = await surreal.query<[Post<TAuthorType>[]]>(
                 `SELECT * FROM post WHERE id = $id ${
                     fetchAuthor ? 'FETCH author' : ''
@@ -163,11 +167,12 @@ export function useUpdatePost({
     id,
     onUpdated,
 }: {
-    id: PostID;
+    id?: PostID;
     onUpdated?: (post: Post<UserID>) => unknown;
 }) {
     return useMutation({
         mutationFn: async (post: PostInput) => {
+            if (!id) return null;
             const result = await surreal.query<[Post[]]>(
                 `UPDATE post CONTENT {
                 title: $title,
@@ -207,6 +212,22 @@ export function useRemovePost({
             } else {
                 throw new Error('Failed to remove post');
             }
+        },
+    });
+}
+
+export function useUser({ id }: { id?: UserID }) {
+    return useQuery({
+        queryKey: ['user', id],
+        queryFn: async (): Promise<User | null> => {
+            if (!id) return null;
+            const result = await surreal.query<[User[]]>(
+                `SELECT * FROM user WHERE id = $id`,
+                { id }
+            );
+            const data = (result[0] && result[0]?.result) ?? [];
+            if (!data[0]) return null;
+            return processUserRecord(data[0]);
         },
     });
 }

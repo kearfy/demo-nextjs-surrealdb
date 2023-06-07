@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import RenderPost from '../components/RenderPost';
-import { useAuthenticatedUser, usePosts } from '../constants/Queries';
+import { useAuthenticatedUser, usePosts, useUser } from '../constants/Queries';
 import { type User } from '../constants/Types';
 import Head from '../components/Head';
+import { useIdFromHash } from '../lib/useIdFromHash';
+import { useRouter } from 'next/router';
 
 export default function Home() {
+    const router = useRouter();
+    const author = useIdFromHash('user');
     const { isLoading, error, data, refetch } = usePosts<User>({
         fetchAuthor: true,
+        author,
     });
+
+    const { data: authorProfile } = useUser({ id: author });
+
+    useEffect(() => {
+        if (!author) router.push('/');
+    }, [author, router]);
 
     const { data: user } = useAuthenticatedUser();
     const message = isLoading
@@ -20,9 +31,9 @@ export default function Home() {
 
     return (
         <>
-            <Head title="Posts" />
+            <Head title={`Posts by ${authorProfile?.name}`} />
             <div className="mt-48 mx-8">
-                <h2 className="font-bold mt-4 mb-12 text-5xl">Posts</h2>
+                <h2 className="font-bold mt-4 mb-12 text-5xl">{`Posts by ${authorProfile?.name}`}</h2>
                 {message ? (
                     <p>{message}</p>
                 ) : (

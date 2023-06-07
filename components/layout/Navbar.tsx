@@ -7,7 +7,7 @@ import {
 import LinkButton from '../form/LinkButton';
 import Link from 'next/link';
 import Button from '../form/Button';
-import { PlusCircle } from 'react-feather';
+import { PlusCircle, User } from 'react-feather';
 
 export default function Navbar() {
     const { isLoading: isUserLoading, data: user } = useAuthenticatedUser();
@@ -34,6 +34,13 @@ export default function Navbar() {
                         )}
                         {!isUserLoading && user && (
                             <>
+                                <Link
+                                    href={`/author#${user.id}`}
+                                    className="text-white hover:underline flex items-center gap-2"
+                                >
+                                    <User />
+                                    {user.name}
+                                </Link>
                                 <Link
                                     href="/create"
                                     className="text-white hover:underline flex items-center gap-2"

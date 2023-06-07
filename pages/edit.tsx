@@ -6,13 +6,14 @@ import {
     usePost,
     useUpdatePost,
 } from '../constants/Queries';
-import { type PostID, type User } from '../constants/Types';
+import { type User } from '../constants/Types';
 import Head from '../components/Head';
+import { useIdFromHash } from '../lib/useIdFromHash';
 
 export default function Edit() {
     const router = useRouter();
-    const { data: user } = useAuthenticatedUser();
-    const id: PostID = (router.asPath.match(/#(.*)/)?.[1] ?? '') as PostID;
+    const { data: user, isLoading: isUserLoading } = useAuthenticatedUser();
+    const id = useIdFromHash('post');
     const { isLoading: isSearching, data: post } = usePost<User>({
         id,
         fetchAuthor: true,
@@ -25,17 +26,17 @@ export default function Edit() {
 
     useEffect(() => {
         if (!id) router.push('/');
-        if (!user) router.push('/signin');
-    }, [id, user, router]);
+        if (!isUserLoading && !user) router.push('/signin');
+    }, [id, user, isUserLoading, router]);
 
     // Signed in users can only edit their own posts.
     const userIsAuthor = post?.author.id == user?.id;
     const errorMessage = isSearching
         ? 'Searching the post'
-        : !userIsAuthor
-        ? 'You are not the author of this post'
         : !post
         ? 'Post not found'
+        : !userIsAuthor
+        ? 'You are not the author of this post'
         : undefined;
 
     return (
