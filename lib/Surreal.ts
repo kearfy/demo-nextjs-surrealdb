@@ -30,7 +30,7 @@ export const SurrealSignin = async (auth: SigninDetails): Promise<boolean> =>
             ...auth,
         })
             .then(async (res) => {
-                if (!res) throw new Error('Did not recieve token');
+                if (!res) throw new Error('Did not receive token');
                 localStorage.setItem('usersession', res);
                 resolve(true);
             })
