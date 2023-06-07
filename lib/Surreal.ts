@@ -10,12 +10,13 @@ export const SurrealDatabase =
     process.env.NEXT_PUBLIC_SURREAL_DATABASE ?? 'test';
 
 export const SurrealInstance = new Surreal(SurrealEndpoint, {
-    ns: SurrealNamespace,
-    db: SurrealDatabase,
-    auth:
-        typeof window !== 'undefined'
-            ? localStorage.getItem('usersession') ?? ''
-            : '',
+    prepare: async (db) => {
+        await db.use({ ns: SurrealNamespace, db: SurrealDatabase });
+        const token =
+            typeof window !== 'undefined' &&
+            localStorage.getItem('usersession');
+        if (token) await db.authenticate(token);
+    },
 });
 
 // Opiniated wrapper function for this DB schema.
