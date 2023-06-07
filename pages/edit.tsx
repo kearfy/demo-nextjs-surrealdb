@@ -6,7 +6,7 @@ import {
     usePost,
     useUpdatePost,
 } from '../constants/Queries';
-import { PostID, User } from '../constants/Types';
+import { type PostID, type User } from '../constants/Types';
 import Head from '../components/Head';
 
 export default function Edit() {

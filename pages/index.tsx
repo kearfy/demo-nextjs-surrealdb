@@ -1,7 +1,7 @@
 import React from 'react';
 import RenderPost from '../components/RenderPost';
 import { useAuthenticatedUser, usePosts } from '../constants/Queries';
-import { User } from '../constants/Types';
+import { type User } from '../constants/Types';
 import Head from '../components/Head';
 
 export default function Home() {

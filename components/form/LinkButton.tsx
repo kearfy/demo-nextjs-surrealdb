@@ -1,6 +1,6 @@
-import Link, { LinkProps } from 'next/link';
-import React, { ForwardedRef, ReactNode, forwardRef } from 'react';
-import { ButtonColor, ButtonSize, buttonStyle } from './Button';
+import Link, { type LinkProps } from 'next/link';
+import React, { type ForwardedRef, type ReactNode, forwardRef } from 'react';
+import { type ButtonColor, type ButtonSize, buttonStyle } from './Button';
 
 const LinkButton = forwardRef(
     (

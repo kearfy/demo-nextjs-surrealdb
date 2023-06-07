@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { SignupDetails } from '../constants/Types';
+import { type SignupDetails } from '../constants/Types';
 import { useForm } from 'react-hook-form';
 import { useAuthenticatedUser, useSurrealSignup } from '../constants/Queries';
 import { useRouter } from 'next/router';

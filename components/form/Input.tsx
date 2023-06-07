@@ -1,8 +1,8 @@
 import { cva } from 'class-variance-authority';
 import React, {
-    DetailedHTMLProps,
-    ForwardedRef,
-    InputHTMLAttributes,
+    type DetailedHTMLProps,
+    type ForwardedRef,
+    type InputHTMLAttributes,
     forwardRef,
 } from 'react';
 

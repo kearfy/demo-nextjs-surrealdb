@@ -1,5 +1,5 @@
 import Surreal from 'surrealdb.js';
-import { SigninDetails, SignupDetails } from '../constants/Types';
+import { type SigninDetails, type SignupDetails } from '../constants/Types';
 
 // Define connection details for our surrealdb instance.
 export const SurrealEndpoint =

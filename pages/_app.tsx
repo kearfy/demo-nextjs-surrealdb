@@ -1,9 +1,9 @@
 import React from 'react';
 import type { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import '../styles/globals.css';
 import Navbar from '../components/layout/Navbar';
 import Head from '../components/Head';
+import '../styles/globals.css';
 
 const queryClient = new QueryClient();
 

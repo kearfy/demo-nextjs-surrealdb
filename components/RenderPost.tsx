@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRemovePost } from '../constants/Queries';
-import { Post, PostID, User } from '../constants/Types';
+import { type Post, type PostID, type User } from '../constants/Types';
 import LinkButton from './form/LinkButton';
 import Button from './form/Button';
 

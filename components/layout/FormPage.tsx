@@ -1,4 +1,4 @@
-import React, { FormEventHandler, ReactNode } from 'react';
+import React, { type FormEventHandler, type ReactNode } from 'react';
 import Button from '../form/Button';
 
 export default function FormPage({

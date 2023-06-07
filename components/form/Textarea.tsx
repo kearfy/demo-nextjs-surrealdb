@@ -1,10 +1,10 @@
 import React, {
-    DetailedHTMLProps,
-    ForwardedRef,
-    TextareaHTMLAttributes,
+    type DetailedHTMLProps,
+    type ForwardedRef,
+    type TextareaHTMLAttributes,
     forwardRef,
 } from 'react';
-import { InputSize, inputStyle } from './Input';
+import { type InputSize, inputStyle } from './Input';
 
 const Textarea = forwardRef(
     (

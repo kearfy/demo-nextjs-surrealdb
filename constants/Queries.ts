@@ -6,13 +6,13 @@ import {
     SurrealSignup,
 } from '../lib/Surreal';
 import {
-    Post,
-    PostID,
-    PostInput,
-    SigninDetails,
-    SignupDetails,
-    User,
-    UserID,
+    type Post,
+    type PostID,
+    type PostInput,
+    type SigninDetails,
+    type SignupDetails,
+    type User,
+    type UserID,
 } from './Types';
 import {
     processPostRecord,
