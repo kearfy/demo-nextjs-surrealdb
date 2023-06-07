@@ -8,9 +8,9 @@ DEFINE SCOPE user
     SIGNUP ( CREATE user SET name = $name, username = $username, password = crypto::argon2::generate($password) )
     SIGNIN ( SELECT * FROM user WHERE username = $username AND crypto::argon2::compare(password, $password));
 
-DEFINE FIELD name       ON TABLE user TYPE string ASSERT $value != NONE;
-DEFINE FIELD username   ON TABLE user TYPE string ASSERT $value != NONE;
-DEFINE FIELD password   ON TABLE user TYPE string ASSERT $value != NONE
+DEFINE FIELD name       ON TABLE user TYPE string;
+DEFINE FIELD username   ON TABLE user TYPE string;
+DEFINE FIELD password   ON TABLE user TYPE string
     PERMISSIONS 
         FOR select NONE
         FOR update, delete WHERE $scope = 'user' && id = $auth.id;

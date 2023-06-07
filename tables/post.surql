@@ -48,8 +48,8 @@ DEFINE TABLE post SCHEMAFULL
         FOR create WHERE $scope = 'user'
         FOR update, delete WHERE $scope = 'user' && author = $auth.id;
 
-DEFINE FIELD title   ON TABLE post TYPE string ASSERT $value != NONE;
-DEFINE FIELD body    ON TABLE post TYPE string ASSERT $value != NONE;
+DEFINE FIELD title   ON TABLE post TYPE string;
+DEFINE FIELD body    ON TABLE post TYPE string;
 DEFINE FIELD author  ON TABLE post VALUE $before OR $auth.id;
 DEFINE FIELD created ON TABLE post VALUE $before OR time::now();
 DEFINE FIELD updated ON TABLE post VALUE time::now();
