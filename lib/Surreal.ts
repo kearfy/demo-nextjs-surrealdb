@@ -1,4 +1,4 @@
-import AwaitedSurreal from '@theopensource-company/awaited-surrealdb';
+import Surreal from 'surrealdb.js';
 import { SigninDetails, SignupDetails } from '../constants/Types';
 
 // Define connection details for our surrealdb instance.
@@ -9,15 +9,13 @@ export const SurrealNamespace =
 export const SurrealDatabase =
     process.env.NEXT_PUBLIC_SURREAL_DATABASE ?? 'test';
 
-export const SurrealInstance = new AwaitedSurreal({
-    endpoint: SurrealEndpoint,
-    namespace: SurrealNamespace,
-    database: SurrealDatabase,
-    token: async () => {
-        if (typeof window !== 'undefined') {
-            return localStorage.getItem('usersession');
-        }
-    },
+export const SurrealInstance = new Surreal(SurrealEndpoint, {
+    ns: SurrealNamespace,
+    db: SurrealDatabase,
+    auth:
+        typeof window !== 'undefined'
+            ? localStorage.getItem('usersession') ?? ''
+            : '',
 });
 
 // Opiniated wrapper function for this DB schema.
@@ -31,6 +29,7 @@ export const SurrealSignin = async (auth: SigninDetails): Promise<boolean> =>
             ...auth,
         })
             .then(async (res) => {
+                if (!res) throw new Error('Did not recieve token');
                 localStorage.setItem('usersession', res);
                 resolve(true);
             })
@@ -67,7 +66,6 @@ export const SurrealSignout = async (): Promise<boolean> =>
         SurrealInstance.invalidate()
             .then(async () => {
                 localStorage.removeItem('usersession');
-                location.reload(); // FIXME: Needed until Beta 9.
                 resolve(false);
             })
             .catch((error) => {
